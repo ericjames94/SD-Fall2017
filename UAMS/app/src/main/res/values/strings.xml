@@ -22,4 +22,16 @@
         <item>Item14</item>
         <item>Item15</item>
     </string-array>
+
+    <string-array name="fakeWarehouses">
+        <item>Warehouse 1</item>
+        <item>Warehouse 2</item>
+        <item>Warehouse 3</item>
+        <item>Warehouse 4</item>
+        <item>Warehouse 5</item>
+        <item>Warehouse 6</item>
+        <item>Warehouse 7</item>
+        <item>Warehouse 8</item>
+        <item>Warehouse 9</item>
+    </string-array>
 </resources>
