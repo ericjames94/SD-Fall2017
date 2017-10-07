@@ -15,6 +15,10 @@
             android:id="@+id/nav_warehouse"
             android:icon="@drawable/ic_menu_change_warehouse"/>
         <item
+            android:title="Connect to UAMS"
+            android:id="@+id/connect_UAMS" />
+            //android:icon="@" />
+        <item
             android:title="Receive Data"
             android:id="@+id/nav_receive_data"
             android:icon="@drawable/ic_menu_receive_data"></item>

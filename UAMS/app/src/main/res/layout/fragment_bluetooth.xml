@@ -2,63 +2,97 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:contect=".Bluetooth"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/bluetoothTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UAMS"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:textSize="50dp" />
 
     <TextView
+        android:id="@+id/bluetoothInstructure1"
         android:text="Establish Bluetooth Connection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:id="@+id/textview"
+        android:layout_marginTop="80dp"
         android:textSize="25dp" />
 
-    <ImageView
+    <TextView
+        android:id="@+id/PairedDeviceMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_nav_drawer_logo"
-        />
+        android:text="Seach for paired device in list view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="125dp"/>
+    <TextView
+        android:id="@+id/UnpairedDeviceMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To pair with new device, search in ''Device List''"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="145dp"/>
+
+    <ImageView
+        android:id="@+id/UAMSLOGO1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="170dp"
+        app:srcCompat="@drawable/ic_nav_drawer_logo" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/EnableButton"
         android:layout_width="110dp"
         android:layout_height="60dp"
-        android:text="Connect"
+        android:text="Enable"
         android:clickable="true"
-        android:onClick="on"
+        android:onClick="enable"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true"/>
+        android:layout_marginTop="270dp"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/DisableButton"
         android:layout_width="110dp"
         android:layout_height="60dp"
-        android:text="Disconnect"
+        android:text="Disable"
         android:clickable="true"
-        android:onClick="on"
+        android:onClick="disable"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_marginTop="270dp" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/DeviceListButton"
         android:layout_width="110dp"
         android:layout_height="60dp"
         android:clickable="true"
-        android:onClick="on"
+        android:onClick="list"
         android:text="Device List"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:layout_centerVertical="true" />
+        android:layout_marginTop="270dp" />
+
+    <TextView
+        android:id="@+id/PairedDeviceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paired Devices:"
+        android:textSize="18dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="335dp"/>
+
+    <ListView
+        android:id="@+id/PairedDeviceList1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/PairedDeviceTitle" />
 
 </RelativeLayout>
-
