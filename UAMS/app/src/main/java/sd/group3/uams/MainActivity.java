@@ -118,6 +118,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_warehouse:
                 fragment = new Warehouses();
                 break;
+            case R.id.nav_bluetooth:
+                fragment = new Bluetooth();
+                break;
             case R.id.nav_receive_data:
                 //fragment = new ReceiveData();
                 break;

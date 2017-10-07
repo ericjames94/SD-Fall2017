@@ -1,8 +1,9 @@
 package sd.group3.uams;
 
-import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+
+import android.support.v4.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ public class Bluetooth extends Fragment {
     private Set<BluetoothDevice> pairedDevices;
     ListView lv;
 
-    protected void onCreateView(Bundle savedInstanceState){
+    public void onCreateView(Bundle savedInstanceState){
         super.onCreate((savedInstanceState));
 
         BA = BluetoothAdapter.getDefaultAdapter();
