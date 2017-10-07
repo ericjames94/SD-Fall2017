@@ -16,14 +16,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/item_name"
-        android:paddingHorizontal="1dp"
-        android:paddingVertical="1dp"
-        android:text="Item1"
+        android:text="Item Name"
         android:layout_marginLeft="17dp"
         android:layout_marginStart="17dp"
-        android:layout_below="@+id/item_name_label"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/item_name_label" />
 
 
     <!--Quantity-->
@@ -34,13 +30,13 @@
         android:text="Quantity"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/item_name"
-        android:layout_alignRight="@+id/item_name"
-        android:layout_alignEnd="@+id/item_name" />
+        android:layout_alignLeft="@+id/item_name_label"
+        android:layout_alignStart="@+id/item_name_label" />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/item_quantity"
-        android:text="5"
+        android:text="999"
         android:layout_below="@+id/item_quantity_label"
         android:layout_alignLeft="@+id/item_quantity_label"
         android:layout_alignStart="@+id/item_quantity_label" />
@@ -54,8 +50,8 @@
         android:text="Location"
         android:layout_marginTop="19dp"
         android:layout_below="@+id/item_quantity"
-        android:layout_alignLeft="@+id/item_quantity"
-        android:layout_alignStart="@+id/item_quantity" />
+        android:layout_alignLeft="@+id/item_quantity_label"
+        android:layout_alignStart="@+id/item_quantity_label" />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,16 +70,16 @@
         android:text="Item Description"
         android:layout_marginTop="18dp"
         android:layout_below="@+id/item_location"
-        android:layout_alignLeft="@+id/item_description"
-        android:layout_alignStart="@+id/item_description" />
+        android:layout_alignLeft="@+id/item_location_label"
+        android:layout_alignStart="@+id/item_location_label" />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/item_description"
         android:text="First item in the fake collection."
         android:layout_below="@+id/item_description_label"
-        android:layout_alignLeft="@+id/item_location_label"
-        android:layout_alignStart="@+id/item_location_label" />
+        android:layout_alignLeft="@+id/item_description_label"
+        android:layout_alignStart="@+id/item_description_label" />
 
 
     <!--Item Image-->
@@ -102,5 +98,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/item_image"
-        />
+        android:src="@android:drawable/sym_def_app_icon"
+        android:layout_below="@+id/item_image_label"
+        android:layout_alignLeft="@+id/item_image_label"
+        android:layout_alignStart="@+id/item_image_label"
+        android:layout_alignRight="@+id/item_image_label"
+        android:layout_alignEnd="@+id/item_image_label" />
 </RelativeLayout>
