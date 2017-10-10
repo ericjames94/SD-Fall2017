@@ -3,12 +3,15 @@ package sd.group3.uams;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -28,16 +31,29 @@ public class Bluetooth extends Fragment {
     private Set<BluetoothDevice> pairedDevices;
     ListView lv;
 
-    public void onCreateView(Bundle savedInstanceState){
-        super.onCreate((savedInstanceState));
-
-        BA = BluetoothAdapter.getDefaultAdapter();
-        lv = (ListView) lv.findViewById(R.id.PairedDeviceList1);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState){
+        View view = inflater.inflate(R.layout.fragment_bluetooth, container, false);
 
         enableConnection = (Button) enableConnection.findViewById(R.id.EnableButton);
         disableConnection = (Button) disableConnection.findViewById(R.id.DisableButton);
         deviceList = (Button) deviceList.findViewById(R.id.DeviceListButton);
+
+        BA = BluetoothAdapter.getDefaultAdapter();
+        lv = (ListView) lv.findViewById(R.id.PairedDeviceList1);
+
+        return view;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //you can set the title for your toolbar here for different fragments different titles
+        getActivity().setTitle("Bluetooth");
+    }
+
 
     //Enable Bluetooth Connection
     public void enable(View v){
