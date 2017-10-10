@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:contect=".Bluetooth"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
     android:orientation="vertical">
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="UAMS"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:textSize="50dp" />
 
     <TextView
@@ -22,34 +22,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:textSize="25dp" />
 
     <TextView
         android:id="@+id/PairedDeviceMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seach for paired device in list view"
+        android:text="Click ''Enable'' to turn on Bluetooth Connection"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="125dp"/>
+        android:layout_marginTop="160dp"/>
     <TextView
         android:id="@+id/UnpairedDeviceMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="To pair with new device, search in ''Device List''"
+        android:text="To pair with UAMS, click ''Get Device''"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="145dp"/>
+        android:layout_marginTop="180dp"/>
 
     <ImageView
         android:id="@+id/UAMSLOGO1"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="220dp"
         app:srcCompat="@drawable/ic_nav_drawer_logo" />
 
     <Button
-        android:id="@+id/EnableButton"
+        android:id="@+id/enableButton"
         android:layout_width="110dp"
         android:layout_height="60dp"
         android:text="Enable"
@@ -57,42 +57,27 @@
         android:onClick="enable"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="270dp"/>
+        android:layout_marginTop="420dp"/>
 
     <Button
-        android:id="@+id/DisableButton"
+        android:id="@+id/disableButton"
         android:layout_width="110dp"
         android:layout_height="60dp"
         android:text="Disable"
         android:clickable="true"
         android:onClick="disable"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="270dp" />
+        android:layout_marginTop="420dp" />
 
     <Button
-        android:id="@+id/DeviceListButton"
+        android:id="@+id/getDeviceButton"
         android:layout_width="110dp"
         android:layout_height="60dp"
         android:clickable="true"
-        android:onClick="list"
-        android:text="Device List"
+        android:onClick="getDevice"
+        android:text="Get Device"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="270dp" />
-
-    <TextView
-        android:id="@+id/PairedDeviceTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Paired Devices:"
-        android:textSize="18dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="335dp"/>
-
-    <ListView
-        android:id="@+id/PairedDeviceList1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/PairedDeviceTitle" />
+        android:layout_marginTop="420dp" />
 
 </RelativeLayout>
