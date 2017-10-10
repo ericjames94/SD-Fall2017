@@ -1,14 +1,18 @@
 package sd.group3.uams;
 
+//Libraries needed to utilize Fragments
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
+//Misc Libraries for desired functionality
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
