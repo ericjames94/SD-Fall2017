@@ -37,13 +37,6 @@ public class Bluetooth extends Fragment {
                              @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_bluetooth, container, false);
 
-        enableConnection = (Button) enableConnection.findViewById(R.id.EnableButton);
-        disableConnection = (Button) disableConnection.findViewById(R.id.DisableButton);
-        deviceList = (Button) deviceList.findViewById(R.id.DeviceListButton);
-
-        BA = BluetoothAdapter.getDefaultAdapter();
-        lv = (ListView) lv.findViewById(R.id.PairedDeviceList1);
-
         return view;
     }
 
@@ -52,8 +45,17 @@ public class Bluetooth extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Bluetooth");
+        setUp();
     }
 
+    public void setUp(){
+        enableConnection = (Button) getActivity().findViewById(R.id.EnableButton);
+        disableConnection = (Button) getActivity().findViewById(R.id.DisableButton);
+        deviceList = (Button) getActivity().findViewById(R.id.DeviceListButton);
+
+        BA = BluetoothAdapter.getDefaultAdapter();
+        lv = (ListView) getActivity().findViewById(R.id.PairedDeviceList1);
+    }
 
     //Enable Bluetooth Connection
     public void enable(View v){
