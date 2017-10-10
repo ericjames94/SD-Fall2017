@@ -19,12 +19,15 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-
+        db.execSQL(DBContract.Warehouses.CREATE_TABLE);
+        db.execSQL(DBContract.Items.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVer, int newVer) {
+    /* Need to change so that we delete the item table that is associated with the warehouse table*/
+        db.execSQL(DBContract.Warehouses.DELETE_TABLE);
+        db.execSQL(DBContract.Items.DELETE_TABLE);
         onCreate(db);
     }
 }

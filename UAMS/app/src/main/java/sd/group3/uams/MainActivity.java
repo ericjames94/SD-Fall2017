@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new Bluetooth();
                 break;
             case R.id.nav_receive_data:
-                //fragment = new ReceiveData();
+                fragment = new Bluetooth();
                 break;
             case R.id.nav_manage:
                 //fragment = new Settings();

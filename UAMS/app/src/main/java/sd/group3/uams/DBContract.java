@@ -12,44 +12,55 @@ public final class DBContract {
 
     public static final int dbVersion = 1;
     public static final String dbName = "UAMS.db";
-    public static final String TEXT_TYPE = " TEXT";
 
-    //Store the image
-    public static final String IMAGE_NAME = "image_name";
-    public static final String IMAGE_DATA = "image_data";
+    //Constants for easy declaration of queries
+    public static final String TEXT_TYPE = " TEXT";
+    public static final String BLOB_TYPE = " BLOB";
     public static final String COMMA = ",";
 
-    //Inner class to define Warehouse Table
+    /* ========================
+           WAREHOUSE TABLE
+       =======================*/
     public static class Warehouses implements BaseColumns {
+
+        //Declare of table and column names
         public static final String TABLE_NAME = "Warehouses";
         public static final String COLUMN_NAME_1 = "Name";
         public static final String COLUMN_NAME_2 = "Location";
 
+        //Create Table Query
         public static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
                 _ID + "INTEGER PRIMARY KEY," +
                 COLUMN_NAME_1 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_2 + TEXT_TYPE + " )";
 
+        //Delete Table Query
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
-    //Inner class to define Items Table
+    /* ========================
+             ITEMS TABLE
+       =======================*/
     public static class Items implements BaseColumns {
+
+        //Declare table `and column names
         public static final String TABLE_NAME = "Items";
         public static final String COLUMN_NAME_1 = "Name";
         public static final String COLUMN_NAME_2 = "Quantity";
         public static final String COLUMN_NAME_3 = "Description";
         public static final String COLUMN_NAME_4 = "Image";
 
+        //Create Table Query
         public static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
                 _ID + "INTEGER PRIMARY KEY," +
                 COLUMN_NAME_1 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_2 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_3 + TEXT_TYPE + COMMA +
-                COLUMN_NAME_4 + TEXT_TYPE + " )";
+                COLUMN_NAME_4 + BLOB_TYPE + " )";
 
+        //Delete Table Query
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
