@@ -24,6 +24,9 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private ListView mListView;
+    private DBHandler db = new DBHandler(this);
+    private boolean itemFocus = false;
+    private boolean warehouseFocus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity
 
         // Display inventory menu on create
         displaySelectedScreen(R.id.nav_inv);
+
+        //Create tables
+
     }
 
     @Override
@@ -61,6 +67,17 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         getMenuInflater().inflate(R.menu.search, menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        menu.add(0, Menu.NONE, Menu.NONE, "Settings");
+        if(itemFocus)
+            menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Add Item");
+        if(warehouseFocus)
+            menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Add Warehouse");
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -110,12 +127,16 @@ public class MainActivity extends AppCompatActivity
 
         switch (itemId) {
             case R.id.nav_inv:
+                itemFocus = true;
+                warehouseFocus = false;
                 fragment = new Inventory();
                 break;
             case R.id.nav_report:
                 //fragment = new Report();
                 break;
             case R.id.nav_warehouse:
+                itemFocus = false;
+                warehouseFocus = true;
                 fragment = new Warehouses();
                 break;
             case R.id.nav_receive_data:

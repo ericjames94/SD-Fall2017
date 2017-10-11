@@ -3,31 +3,35 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:title="Inventory"
+            android:title="@string/navigation_inventory"
             android:id="@+id/nav_inv"
             android:icon="@drawable/ic_menu_inventory_list"/>
         <item
-            android:title="Generate Report"
+            android:title="@string/navigation_gen_report"
             android:id="@+id/nav_report"
             android:icon="@drawable/ic_menu_report"/>
         <item
-            android:title="Change Warehouse"
+            android:title="@string/navigation_warehouse"
             android:id="@+id/nav_warehouse"
             android:icon="@drawable/ic_menu_change_warehouse"/>
+        <!--<item-->
+            <!--android:title="@string/navigation_connect"-->
+            <!--android:id="@+id/nav_connect"-->
+            <!--android:icon="@drawable/ic_menu_connect"/>-->
         <item
-            android:title="Receive Data"
+            android:title="@string/navigation_receive"
             android:id="@+id/nav_receive_data"
-            android:icon="@drawable/ic_menu_receive_data"></item>
+            android:icon="@drawable/ic_menu_receive_data"/>
         <item
-            android:title="Settings"
+            android:title="@string/navigation_settings"
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/navigation_communicate">
         <menu>
             <item
-                android:title="Send Report"
+                android:title="@string/navigation_send_report"
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"/>
         </menu>
