@@ -28,6 +28,15 @@ import android.widget.AdapterView;
 public class Inventory extends Fragment {
     private ListView mListView;
 
+    public Inventory() {
+        setHasOptionsMenu(true);
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
