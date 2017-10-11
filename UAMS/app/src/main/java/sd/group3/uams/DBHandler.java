@@ -20,10 +20,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-<<<<<<< HEAD
-=======
         // Create Warehouses and Items tables
->>>>>>> bluetooth
         db.execSQL(DBContract.Warehouses.CREATE_TABLE);
         db.execSQL(DBContract.Items.CREATE_TABLE);
     }

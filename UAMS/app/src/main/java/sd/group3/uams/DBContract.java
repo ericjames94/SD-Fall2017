@@ -17,17 +17,10 @@ public final class DBContract {
     public static final String TEXT_TYPE = " TEXT";
     public static final String BLOB_TYPE = " BLOB";
     public static final String COMMA = ",";
-<<<<<<< HEAD
 
     /* ========================
            WAREHOUSE TABLE
        =======================*/
-=======
-    /*=====================================
-      Inner class to define Warehouse Table
-      =====================================
-    */
->>>>>>> bluetooth
     public static class Warehouses implements BaseColumns {
 
         //Declare of table and column names
@@ -48,21 +41,15 @@ public final class DBContract {
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
-<<<<<<< HEAD
     /* ========================
              ITEMS TABLE
-       =======================*/
-=======
-    /*=================================
-      Inner class to define Items Table
-      =================================
+       =======================
         The Items table will hold all of the items that are stored within the system. The
         Warehouse_ID column will hold the id of the warehouse that houses the item.
         When retrieving the inventory for a warehouse, we will look for all entries that
         match the Warehouse_ID of a particular warehouse.
     */
 
->>>>>>> bluetooth
     public static class Items implements BaseColumns {
 
         //Declare table `and column names
@@ -80,12 +67,8 @@ public final class DBContract {
                 COLUMN_NAME_1 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_2 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_3 + TEXT_TYPE + COMMA +
-<<<<<<< HEAD
-                COLUMN_NAME_4 + BLOB_TYPE + " )";
-=======
-                COLUMN_NAME_4 + TEXT_TYPE + COMMA +
+                COLUMN_NAME_4 + BLOB_TYPE + COMMA +
                 COLUMN_NAME_5 + TEXT_TYPE + " )";
->>>>>>> bluetooth
 
         //Delete Table Query
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;

@@ -19,15 +19,12 @@
             <!--android:id="@+id/nav_connect"-->
             <!--android:icon="@drawable/ic_menu_connect"/>-->
         <item
-<<<<<<< HEAD
-            android:title="Connect to UAMS"
+            android:title="@string/navigation_connect"
             android:id="@+id/nav_bluetooth" />
             //android:icon="@" />
+
         <item
-            android:title="Receive Data"
-=======
             android:title="@string/navigation_receive"
->>>>>>> bluetooth
             android:id="@+id/nav_receive_data"
             android:icon="@drawable/ic_menu_receive_data"/>
         <item
