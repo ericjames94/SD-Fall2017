@@ -1,6 +1,8 @@
 package sd.group3.uams;
 
 //Libraries needed to utilize Fragments
+import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
@@ -13,33 +15,38 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 /*
  * Created by ericjames on 9/16/17.
  */
 
 public class Warehouses extends Fragment {
     private ListView mListView;
+    private ArrayList<String> warehouseNames = new ArrayList<String>();
+    protected ArrayList<Integer> warehouseIds = new ArrayList<Integer>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_warehouses, container, false);
         mListView = view.findViewById(R.id.warehouse_list);
-        String[] warehouses = getResources().getStringArray(R.array.fakeWarehouses);
 
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1,
-                warehouses);
-        mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
+                //Set warehouse ID to make query for warehouse information
+                ((MainActivity)getActivity()).warehouseId = warehouseIds.get(position);
 
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-//                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.replace(R.id.content_frame, new ItemInfo());
-//                ft.addToBackStack(null);
-//                ft.commit();
-//            }
-//        });
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.replace(R.id.content_frame, new WarehouseInfo());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
+        displayWarehouses();
         return view;
     }
 
@@ -48,5 +55,32 @@ public class Warehouses extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Warehouses");
+    }
+
+    private void displayWarehouses() {
+        warehouseNames.clear();
+        getWarehouseNames();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_1, warehouseNames);
+        mListView.setAdapter(adapter);
+    }
+
+    private void getWarehouseNames() {
+        try {
+            WarehouseDBAdapter db = new WarehouseDBAdapter(this.getContext());
+            db.openToRead();
+            Cursor c = db.getAllWarehouses();
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    do {
+                        warehouseNames.add(c.getString(c.getColumnIndex("Name")));
+                        warehouseIds.add(c.getInt(c.getColumnIndex("_id")));
+                    } while (c.moveToNext());
+                }
+            }
+            db.close();
+        } catch(SQLiteException e) {
+            System.out.println("Error opening database");
+        }
     }
 }

@@ -14,14 +14,10 @@
             android:title="@string/navigation_warehouse"
             android:id="@+id/nav_warehouse"
             android:icon="@drawable/ic_menu_change_warehouse"/>
-        <!--<item-->
-            <!--android:title="@string/navigation_connect"-->
-            <!--android:id="@+id/nav_connect"-->
-            <!--android:icon="@drawable/ic_menu_connect"/>-->
         <item
             android:title="@string/navigation_connect"
-            android:id="@+id/nav_bluetooth" />
-            //android:icon="@" />
+            android:id="@+id/nav_bluetooth"
+            android:icon="@drawable/ic_bluetooth_black"/>
 
         <item
             android:title="@string/navigation_receive"

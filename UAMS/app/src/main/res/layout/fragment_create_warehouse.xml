@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <!--Display Message-->
+    <TextView
+        android:id="@+id/application_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/create_warehouse_header"
+        android:text="@string/header_create_warehouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/create_warehouse_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/message_create_warehouse"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"/>
+
+    <!--Warehouse Name-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/warehouse_name_label"
+        android:text="@string/label_name"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/create_warehouse_name"
+        android:layout_alignStart="@+id/create_warehouse_name" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_warehouse_name"
+        android:text="@string/placeholder_warehouse_name"
+        android:ems="7"
+        android:selectAllOnFocus="true"
+        android:layout_below="@+id/warehouse_name_label"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp" />
+
+
+    <!--Warehouse Location-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/warehouse_location_label"
+        android:text="@string/label_location"
+        android:layout_above="@+id/create_warehouse_location"
+        android:layout_alignLeft="@+id/create_warehouse_location"
+        android:layout_alignStart="@+id/create_warehouse_location" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_warehouse_location"
+        android:text="@string/placeholder_warehouse_location"
+        android:selectAllOnFocus="true"
+        android:ems="8"
+        android:layout_alignBaseline="@+id/create_warehouse_name"
+        android:layout_alignBottom="@+id/create_warehouse_name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="17dp"
+        android:layout_marginEnd="17dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/warehouse_submit_button"
+        android:clickable="true"
+        android:text="@string/button_submit"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="375dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:id="@+id/warehouse_cancel_button"
+        android:text="@string/button_cancel"
+        android:onClick="cancel"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="75dp"
+        android:layout_marginTop="375dp" />
+
+</RelativeLayout>

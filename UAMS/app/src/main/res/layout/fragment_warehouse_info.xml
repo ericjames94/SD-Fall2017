@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--Warehouse Name-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/warehouse_name_label"
+        android:text="@string/label_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/info_warehouse_name"
+        android:layout_alignStart="@+id/info_warehouse_name"
+        android:layout_marginTop="41dp" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/info_warehouse_name"
+        android:text="@string/placeholder_warehouse_name"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
+        android:selectAllOnFocus="true"
+        android:layout_below="@+id/warehouse_name_label"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp" />
+
+
+    <!--Warehouse Location-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/warehouse_location_label"
+        android:text="@string/label_location"
+        android:layout_below="@+id/info_warehouse_name"
+        android:layout_alignLeft="@+id/info_warehouse_name"
+        android:layout_alignStart="@+id/info_warehouse_name"
+        android:layout_marginTop="27dp" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/info_warehouse_location"
+        android:text="@string/placeholder_warehouse_location"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
+        android:selectAllOnFocus="true"
+        android:layout_below="@+id/warehouse_location_label"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp" />
+
+</RelativeLayout>

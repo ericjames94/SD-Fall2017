@@ -11,34 +11,27 @@
         android:id="@+id/bluetoothTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="UAMS"
+        android:text="@string/app_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:textSize="50dp" />
+        android:textSize="50sp" />
 
     <TextView
-        android:id="@+id/bluetoothInstructure1"
-        android:text="Establish Bluetooth Connection"
+        android:id="@+id/BluetoothFragmentHeader"
+        android:text="@string/header_bluetooth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:textSize="25dp" />
+        android:textSize="25sp" />
 
     <TextView
-        android:id="@+id/PairedDeviceMessage"
+        android:id="@+id/BluetoothFragmentMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click ''Enable'' to turn on Bluetooth Connection"
+        android:text="@string/message_bluetooth"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="160dp"/>
-    <TextView
-        android:id="@+id/UnpairedDeviceMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="To pair with UAMS, click ''Get Device''"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"/>
 
     <ImageView
         android:id="@+id/UAMSLOGO1"
@@ -52,7 +45,7 @@
         android:id="@+id/enableButton"
         android:layout_width="110dp"
         android:layout_height="60dp"
-        android:text="Enable"
+        android:text="@string/button_enable"
         android:clickable="true"
         android:onClick="enable"
         android:layout_alignParentLeft="true"
@@ -63,7 +56,7 @@
         android:id="@+id/disableButton"
         android:layout_width="110dp"
         android:layout_height="60dp"
-        android:text="Disable"
+        android:text="@string/button_disable"
         android:clickable="true"
         android:onClick="disable"
         android:layout_centerHorizontal="true"
@@ -75,7 +68,7 @@
         android:layout_height="60dp"
         android:clickable="true"
         android:onClick="getDevice"
-        android:text="Get Device"
+        android:text="@string/button_get_device"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:layout_marginTop="420dp" />

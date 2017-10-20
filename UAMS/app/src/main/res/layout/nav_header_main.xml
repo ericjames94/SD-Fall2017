@@ -15,17 +15,22 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.60"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
         app:srcCompat="@drawable/ic_nav_drawer_logo" />
+
+    <TextView
+        android:id="@+id/active_warehouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholder_warehouse_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Universal Asset Management System"
+        android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+        android:text="@string/app_name_long"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>

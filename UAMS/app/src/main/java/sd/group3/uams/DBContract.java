@@ -6,39 +6,37 @@ import android.provider.BaseColumns;
  * Created by ericjames on 10/7/17.
  */
 
-public final class DBContract {
+final class DBContract {
     //Private contructor to prevent accidentally instantiating the contract class
     private DBContract() {};
 
-    public static final int dbVersion = 1;
-    public static final String dbName = "UAMS.db";
+    static final int dbVersion = 1;
+    static final String dbName = "UAMS.db";
 
     //Constants for easy declaration of queries
-    public static final String TEXT_TYPE = " TEXT";
-    public static final String BLOB_TYPE = " BLOB";
-    public static final String COMMA = ",";
+    private static final String TEXT_TYPE = " TEXT";
+    private static final String BLOB_TYPE = " BLOB";
+    private static final String COMMA = ",";
 
     /* ========================
            WAREHOUSE TABLE
        =======================*/
-    public static class Warehouses implements BaseColumns {
+    static class Warehouses implements BaseColumns {
 
         //Declare of table and column names
-        public static final String TABLE_NAME = "Warehouses";
-        public static final String COLUMN_NAME_1 = "Name";
-        public static final String COLUMN_NAME_2 = "Location";
-        public static final String COLUMN_NAME_3 = "Inventory";
+        static final String TABLE_NAME = "Warehouses";
+        static final String COLUMN_NAME_1 = "Name";
+        static final String COLUMN_NAME_2 = "Location";
 
         //Create Table Query
-        public static final String CREATE_TABLE = "CREATE TABLE " +
+        static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
-                _ID + "INTEGER PRIMARY KEY," +
+                _ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_NAME_1 + TEXT_TYPE + COMMA +
-                COLUMN_NAME_2 + TEXT_TYPE + COMMA +
-                COLUMN_NAME_3 + TEXT_TYPE + " )";
+                COLUMN_NAME_2 + TEXT_TYPE + " )";
 
         //Delete Table Query
-        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
     /* ========================
@@ -50,20 +48,20 @@ public final class DBContract {
         match the Warehouse_ID of a particular warehouse.
     */
 
-    public static class Items implements BaseColumns {
+    static class Items implements BaseColumns {
 
         //Declare table `and column names
-        public static final String TABLE_NAME = "Items";
-        public static final String COLUMN_NAME_1 = "Name";
-        public static final String COLUMN_NAME_2 = "Quantity";
-        public static final String COLUMN_NAME_3 = "Description";
-        public static final String COLUMN_NAME_4 = "Image";
-        public static final String COLUMN_NAME_5 = "Warehouse_ID";
+        static final String TABLE_NAME = "Items";
+        static final String COLUMN_NAME_1 = "Name";
+        static final String COLUMN_NAME_2 = "Quantity";
+        static final String COLUMN_NAME_3 = "Description";
+        static final String COLUMN_NAME_4 = "Image";
+        static final String COLUMN_NAME_5 = "Warehouse_ID";
 
         //Create Table Query
-        public static final String CREATE_TABLE = "CREATE TABLE " +
+        static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
-                _ID + "INTEGER PRIMARY KEY" +
+                _ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_NAME_1 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_2 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_3 + TEXT_TYPE + COMMA +
@@ -71,7 +69,7 @@ public final class DBContract {
                 COLUMN_NAME_5 + TEXT_TYPE + " )";
 
         //Delete Table Query
-        public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 
 }
