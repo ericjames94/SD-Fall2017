@@ -5,7 +5,7 @@ Group 3 Senior Design Application
 Reading from Micro-controller Flow (all in the Java class)
  1) Get the data
  2) Find unique entries (because it reads so fast)
- 3) So the unique entries in a ListView
+ 3) Show the unique entries in a ListView
  4) Edit the entries
  5) Save in the table
 ****
