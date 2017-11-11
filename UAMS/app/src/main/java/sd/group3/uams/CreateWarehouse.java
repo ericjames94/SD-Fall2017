@@ -96,8 +96,6 @@ public class CreateWarehouse extends Fragment {
         //Add entity to warehouse table and create inventory
         WarehouseDBAdapter db = new WarehouseDBAdapter(this.getContext());
         db.openToWrite();
-        EditText name = (EditText) getActivity().findViewById(R.id.create_warehouse_name);
-        EditText location = (EditText) getActivity().findViewById(R.id.create_warehouse_location);
         db.createWarehouseEntry(name.getText().toString(), location.getText().toString());
         db.close();
 

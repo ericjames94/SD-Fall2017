@@ -36,20 +36,73 @@ class InventoryDBAdapter extends DBAdapter{
 
     public void close() { this.dbHelper.close(); }
 
+    Cursor getItem(int id) {
+        return db.query(DBContract.Items.TABLE_NAME, null, "_id = " + id, null, null, null, null);
+    }
+
+    Cursor getAllItems() {
+        return db.query(DBContract.Items.TABLE_NAME, null, null, null, null, null, null);
+    }
+
     Cursor getAssociatedItems(int id) {
-        return db.query(DBContract.Items.TABLE_NAME, null, "Warehouse ID = " + id, null,
+        return db.query(DBContract.Items.TABLE_NAME, null, "Warehouse_ID = " + id, null,
                 null, null, null);
     }
 
-    void insertItem (int serialNum, String itemName, int quantity, String description,
-                            byte[] image, int warehouseId) {
+    void createItemEntryWithImage(String itemName, int quantity, String description, String location,
+                            String imagePath, int warehouseId, String serialNum) {
         ContentValues values = new ContentValues();
-        values.put("_id", serialNum);
         values.put("Name", itemName);
         values.put("Quantity", quantity);
         values.put("Description", description);
-        values.put("Image", image);
+        values.put("Location", location);
+        values.put("Image", imagePath);
         values.put("Warehouse_ID", warehouseId);
+        values.put("Serial_Num", serialNum);
+        db.insert("Items", null, values);
+        db.close();
+    }
+
+    void createItemEntryNoImage(String itemName, int quantity, String description, String location,
+                                  int warehouseId, String serialNum) {
+        ContentValues values = new ContentValues();
+        values.put("Name", itemName);
+        values.put("Quantity", quantity);
+        values.put("Description", description);
+        values.put("Location", location);
+        values.put("Warehouse_ID", warehouseId);
+        values.put("Serial_Num", serialNum);
         db.insert("Items", null, values);
         db.close(); }
+
+    void editItemEntry(String itemName, int quantity, String description, String location,
+                       int warehouseId, String serialNum) {
+        ContentValues values = new ContentValues();
+        values.put("Name", itemName);
+        values.put("Quantity", quantity);
+        values.put("Description", description);
+        values.put("Location", location);
+        values.put("Warehouse_ID", warehouseId);
+        values.put("Serial_Num", serialNum);
+        db.update(DBContract.Items.TABLE_NAME, values, "_id = ?", new String[] {serialNum} );
+        db.close();
+    }
+
+    Cursor findMatchingString (String searchText) {
+        Cursor names = db.query(DBContract.Items.TABLE_NAME, null, "Name LIKE \"%" + searchText + "%\"", null,
+                null, null, null);
+        Cursor descriptions = db.query(DBContract.Items.TABLE_NAME, null, "Description LIKE \"%"
+                        + searchText + "%\"", null, null, null, null);
+        Cursor serialNums = db.query(DBContract.Items.TABLE_NAME, null, "Serial_Num LIKE \"%"
+                + searchText + "%\"", null, null, null, null);
+        return  (names.moveToFirst() ? names :
+                (descriptions.moveToFirst() ? descriptions :
+                (serialNums.moveToFirst()) ? serialNums : null ));
+    }
+
+    Cursor findSerialNumber (String serialNum) {
+        Cursor serialNums = db.query(DBContract.Items.TABLE_NAME, null, "Serial_Num LIKE \"%"
+            + serialNum + "%\"", null, null, null, null);
+        return serialNums;
+    }
 }

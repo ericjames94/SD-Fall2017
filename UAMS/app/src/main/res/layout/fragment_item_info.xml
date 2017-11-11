@@ -94,13 +94,11 @@
         android:layout_marginRight="70dp"
         android:layout_marginEnd="70dp" />
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/item_image"
         android:src="@android:drawable/sym_def_app_icon"
         android:layout_below="@+id/item_image_label"
-        android:layout_alignLeft="@+id/item_image_label"
-        android:layout_alignStart="@+id/item_image_label"
-        android:layout_alignRight="@+id/item_image_label"
-        android:layout_alignEnd="@+id/item_image_label" />
+        android:layout_marginRight="10dp"
+        android:layout_alignLeft="@+id/item_image_label"/>
 </RelativeLayout>

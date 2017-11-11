@@ -11,14 +11,11 @@ import java.util.Arrays;
 
 
 //Misc Libraries for desired functionality
-import android.app.ListActivity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView;
@@ -30,8 +27,9 @@ import android.widget.AdapterView;
 public class Inventory extends Fragment {
     private ListView mListView;
     private ArrayList<String> itemNames = new ArrayList<String>();
-    private ArrayList<Integer> serialNums = new ArrayList<Integer>();
-    private int warehouseId;
+    private ArrayList<String> itemDescriptions = new ArrayList<String>();
+    private ArrayList<String> itemImages = new ArrayList<String>();
+    private ArrayList<String> serialNums = new ArrayList<String>();
 
     public Inventory() {
         setHasOptionsMenu(true);
@@ -62,8 +60,15 @@ public class Inventory extends Fragment {
                 ft.commit();
             }
         });
-        warehouseId = ((MainActivity)getActivity()).warehouseId;
-        displayItems();
+
+        String searchText = ((MainActivity)getActivity()).searchText;
+        if (searchText == null) {
+            displayItems();
+        }
+        else {
+            displayItems(searchText);
+        }
+
         return view;
     }
 
@@ -82,18 +87,55 @@ public class Inventory extends Fragment {
         mListView.setAdapter(adapter);
     }
 
+    private void displayItems(String searchText) {
+        itemNames.clear();
+        getInventoryList(searchText);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_1, itemNames);
+        mListView.setAdapter(adapter);
+    }
+
     private void getInventoryList() {
         try {
             InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
             db.openToRead();
-            Cursor c = db.getAssociatedItems(warehouseId);
+            Cursor c = db.getAssociatedItems(((MainActivity)getActivity()).warehouseId);
+            System.out.println("Cursor C: " + c);
             if (c != null) {
                 if (c.moveToFirst()) {
                     do {
                         itemNames.add(c.getString(c.getColumnIndex("Name")));
-                        serialNums.add(c.getInt(c.getColumnIndex("_id")));
+                        itemDescriptions.add(c.getString(c.getColumnIndex("Description")));
+                        itemImages.add(c.getString(c.getColumnIndex("Image")));
+                        serialNums.add(c.getString(c.getColumnIndex("Serial_Num")));
                     } while (c.moveToNext());
                 }
+            }
+            db.close();
+        } catch (SQLiteException e) {
+            System.out.println("Error accessing database.");
+        }
+    }
+
+    // Query the database for items that match the user entered search string
+    private void getInventoryList(String searchText) {
+        System.out.println("Searching for matching strings...");
+        try {
+            InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
+            db.openToRead();
+            Cursor c = db.findMatchingString(searchText);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    do {
+                        itemNames.add(c.getString(c.getColumnIndex("Name")));
+                        itemDescriptions.add(c.getString(c.getColumnIndex("Description")));
+                        itemImages.add(c.getString(c.getColumnIndex("Image")));
+                        serialNums.add(c.getString(c.getColumnIndex("Serial_Num")));
+                    } while (c.moveToNext());
+                }
+            }
+            else {
+                //Show view informing the user there were no matches
             }
             db.close();
         } catch (SQLiteException e) {

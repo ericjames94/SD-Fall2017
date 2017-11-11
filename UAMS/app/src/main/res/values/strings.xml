@@ -25,29 +25,37 @@
     <!--Button Strings-->
     <string name="button_enable">Enable</string>
     <string name="button_disable">Disable</string>
-    <string name="button_get_device">Get Device</string>
+    <string name="button_get_device">Pair Device</string>
     <string name="button_submit">Submit</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_connect">Establish Connection</string>
 
     <!--Fragment Headers-->
     <string name="header_create_warehouse">Create New Warehouse</string>
     <string name="header_bluetooth">Establish Bluetooth Connection</string>
+    <string name="header_create_item">Create New Item</string>
+    <string name="header_connect">Collect Data from the Device</string>
 
     <!--Fragment Display Messages-->
     <string name="message_bluetooth">"Click ''Enable'' to turn on Bluetooth Connection \n
         To pair with UAMS, click ''Get Device''"</string>
-    <string name="message_create_warehouse">"Please enter the Warehouse Name and Location"</string>
+    <string name="message_create_warehouse">Please enter the Warehouse Name and Location</string>
+    <string name="message_create_item">Please fill the following Item fields</string>
+    <string name="message_connect">Please establish connection to UAMS</string>
 
     <!--Entity Labels and Placeholders-->
     <string name="label_name">Name</string>
     <string name="label_location">Location</string>
     <string name="label_quantity">Quantity</string>
     <string name="label_description">Description</string>
+    <string name="label_image">Image</string>
     <string name="placeholder_warehouse_name">Warehouse Name</string>
     <string name="placeholder_warehouse_location">Warehouse Location</string>
+    <string name="placeholder_item_name">Item Name</string>
     <string name="placeholder_item_quantity">Item Quantity</string>
     <string name="placeholder_item_location">Item Location</string>
     <string name="placeholder_item_description">Item Description</string>
+    <string name="thumbnail">thumbnail</string>
 
     <string-array name="fakeItems">
         <item>Item1</item>

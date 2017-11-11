@@ -3,6 +3,7 @@ package sd.group3.uams;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
+import android.bluetooth.BluetoothSocket;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import java.util.Set;
 public class Bluetooth extends Fragment {
     Button enableConnection, disableConnection, getDevice;
     private BluetoothAdapter BA = null;
+    private BluetoothSocket btSocket = null;
     private Set<BluetoothDevice> pairableDevices;
 
     @Nullable
@@ -88,6 +90,11 @@ public class Bluetooth extends Fragment {
         }else{
             Toast.makeText(getActivity(), "Bluetooth is already enabled", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //Start the reader
+    public void startScan(View v) {
+
     }
 
     //Disable Bluetooth Connection

@@ -34,7 +34,6 @@ public class WarehouseInfo extends Fragment {
         getActivity().setTitle("Warehouse Details");
         name = getActivity().findViewById(R.id.info_warehouse_name);
         location = getActivity().findViewById(R.id.info_warehouse_location);
-        System.out.println(name);
         warehouseId = ((MainActivity)getActivity()).warehouseId;
         getWarehouseInfo();
 

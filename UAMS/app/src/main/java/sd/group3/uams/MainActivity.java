@@ -1,10 +1,19 @@
 package sd.group3.uams;
 
+import android.Manifest;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.KeyEvent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,22 +21,34 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import static sd.group3.uams.R.id.action_settings;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    /*  ==========================================
-        =           SYSTEM VARIABLES             =
-        ==========================================
-     */
-    private DBAdapter dbHandler;
-    protected String warehouseName;     //Warehouse name for showing current warehouse
-    protected int warehouseId;          //Warehouse Id for database queries
-    protected int serialNum;            //Serial number for database queries
-    protected boolean editable = false; //If true, allow updating of table entities
+/*  ==========================================
+    =           SYSTEM VARIABLES             =
+    ==========================================
+ */
+    private DBAdapter dbHandler;                                // DB Adapter for opening/closing database
+    private TextView activeWarehouse;                           // Displays active warehouse name in Nav Drawer
+    protected String warehouseName;                             // Warehouse name for showing current warehouse
+    protected String searchText;
+    protected int warehouseId;                                  // Warehouse Id for database queries
+    protected boolean editable = false;                         // If true, allow updating of table entities
+    protected String serialNum;                                 // Serial number for database queries
+    protected ArrayList<String> serialNumbers;                  // ArrayList for creating items from read EPCs
 
     // Declare Menu ids for custom Menu items
     private static final int MENU_ADD_ITEM = Menu.FIRST;
@@ -41,7 +62,10 @@ public class MainActivity extends AppCompatActivity
     private boolean warehouseFocus = false;
     private boolean reportFocus = false;
     private boolean sendFocus = false;
-// <----------------------------------------------------------------------------------------------->
+
+    // Custom REQUEST_CODE for checking READ_EXTERNAL_STORAGE permission
+    private int REQUEST_CODE_PERMISSION = 101;
+
 //      ==========================================
 //      =        EVENT OVERRIDE FUNCTIONS        =
 //      ==========================================
@@ -56,17 +80,32 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        handleIntent(getIntent());
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+        activeWarehouse = (TextView) headerView.findViewById(R.id.active_warehouse);
+
         // Display inventory menu on create
-        displaySelectedScreen(R.id.nav_inv);
+        navigationView.setCheckedItem(R.id.nav_warehouse);
+        displaySelectedScreen(R.id.nav_warehouse);
+
 
         // Create Warehouses and Items tables
         dbHandler = new DBAdapter(this);
+
+        checkReadingPermission();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
     }
 
     @Override
@@ -83,13 +122,22 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        getMenuInflater().inflate(R.menu.search, menu);
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
+        getMenuInflater().inflate(R.menu.main, menu);
+
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_item_search));
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
 
         // Using menu.add to create Menu Items
         // menu.add(int: groupId, int: itemId, int: order, CharSequence/int: titleResource)
@@ -108,7 +156,6 @@ public class MainActivity extends AppCompatActivity
         if (sendFocus) {
 
         }
-        menu.add(Menu.NONE, action_settings, Menu.NONE, "Settings");
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -130,10 +177,7 @@ public class MainActivity extends AppCompatActivity
                 editExistingWarehouses();
                 break;
             case MENU_GET_DATABASE:
-                printWarehousesInDatabase();
-                break;
-            case MENU_DELETE_WAREHOUSE:
-                deleteWarehouse();
+                printItemsInDatabase();
                 break;
         }
 
@@ -143,8 +187,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
-            if (getSupportFragmentManager().popBackStackImmediate())
+            if (getSupportFragmentManager().popBackStackImmediate()) {
+                searchText = null;
                 return true;
+            }
             else
                 moveTaskToBack(true);
         }
@@ -153,17 +199,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     // Handle navigation view item clicks here.
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         displaySelectedScreen(item.getItemId());
         return true;
     }
-// <----------------------------------------------------------------------------------------------->
-    /*  ==========================================
-        =           CREATED FUNCTIONS            =
-        ==========================================
-     */
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (grantResults.length >= 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted
+            } else {
+                // permission wasn't granted
+            }
+        }
+    }
+
+/*  ==========================================
+    =           CREATED FUNCTIONS            =
+    ==========================================
+ */
 
     private void displaySelectedScreen(int itemId) {
         // Create fragment object
@@ -203,7 +259,7 @@ public class MainActivity extends AppCompatActivity
                 warehouseFocus = false;
                 reportFocus = false;
                 sendFocus = false;
-                //fragment = new Bluetooth();
+                fragment = new BluetoothConnectionService();
                 break;
             case R.id.nav_manage:
                 itemFocus = false;
@@ -226,8 +282,50 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
     }
 
-    private void createNewInventoryItem() {
+    private void handleIntent(Intent intent) {
 
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            searchText = query;
+            searchInventoryTable();
+        }
+    }
+
+    // Update Navigation Drawer and Inventory to correspond to active warehouse
+    protected void updateViews() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        // Set active warehouse name
+        activeWarehouse.setText(warehouseName);
+        // Switch to the Inventory List
+        navigationView.setCheckedItem(R.id.nav_inv);
+        displaySelectedScreen(R.id.nav_inv);
+    }
+
+    // Check for READ_EXTERNAL_STORAGE Permission, grant permission if necessary
+    private void checkReadingPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // permission wasn't granted
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
+            }
+        }
+    }
+
+/*  ==========================================
+    =      FRAGMENT TRANSITION FUNCTIONS     =
+    ==========================================
+ */
+
+    private void createNewInventoryItem() {
+        FragmentTransaction ft =getSupportFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.replace(R.id.content_frame, new CreateItem());
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     private void createNewWarehouse() {
@@ -237,7 +335,15 @@ public class MainActivity extends AppCompatActivity
         ft.addToBackStack(null);
         ft.commit();
     }
-    
+
+    private void searchInventoryTable() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.replace(R.id.content_frame, new Inventory());
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
     //For testing
     private void editExistingWarehouses() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -258,13 +364,16 @@ public class MainActivity extends AppCompatActivity
         }
         db.close();
     }
-    //For testing
-    private void deleteWarehouse() {
-        WarehouseDBAdapter db = new WarehouseDBAdapter(this);
-        db.openToWrite();
-        for (long i = 0; i < 5; i++) {
-            db.deleteWarehouseEntry(i);
+
+    private void printItemsInDatabase() {
+        InventoryDBAdapter db = new InventoryDBAdapter(this);
+        db.openToRead();
+        try {
+            System.out.println(DatabaseUtils.dumpCursorToString(db.getAllItems()));
+        } catch (SQLiteException se) {
+            System.out.println(se);
         }
+        db.close();
     }
 }
 // <----------------------------------------------------------------------------------------------->

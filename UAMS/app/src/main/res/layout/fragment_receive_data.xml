@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="TextFields,HardcodedText">
+
+    <!--App Name-->
+    <TextView
+        android:id="@+id/application_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textSize="50sp" />
+
+    <!--Fragment Header-->
+    <TextView
+        android:id="@+id/receive_data_header"
+        android:text="@string/header_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textSize="25sp" />
+
+
+    <ImageView
+        android:id="@+id/UAMSLOGO1"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        app:srcCompat="@drawable/ic_nav_drawer_logo" />
+
+    <!--Connect to module-->
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_connect"
+        android:layout_marginTop="315dp"
+        android:layout_centerHorizontal="true"
+        android:padding="3dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
+        android:text="@string/button_connect"/>
+
+    <!--Message Tracking Label-->
+    <TextView
+        android:id="@+id/connection_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginTop="380dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/message_connect" />
+
+    <!--Start Scanning for Tags-->
+    <Button
+        android:id="@+id/button_startScanning"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="435dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:text="Start Scanning" />
+
+    <!--Output scanned tags-->
+    <Button
+        android:id="@+id/button_printTags"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="435dp"
+        android:layout_centerHorizontal="true"
+        android:text="Print Tags" />
+
+
+    <!--Clear the array of tags-->
+    <Button
+        android:id="@+id/button_clearArray"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="435dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:text="Clear Array" />
+</RelativeLayout>

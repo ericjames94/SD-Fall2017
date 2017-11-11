@@ -54,9 +54,11 @@ final class DBContract {
         static final String TABLE_NAME = "Items";
         static final String COLUMN_NAME_1 = "Name";
         static final String COLUMN_NAME_2 = "Quantity";
-        static final String COLUMN_NAME_3 = "Description";
-        static final String COLUMN_NAME_4 = "Image";
-        static final String COLUMN_NAME_5 = "Warehouse_ID";
+        static final String COLUMN_NAME_3 = "Location";
+        static final String COLUMN_NAME_4 = "Description";
+        static final String COLUMN_NAME_5 = "Image";
+        static final String COLUMN_NAME_6 = "Warehouse_ID";
+        static final String COLUMN_NAME_7 = "Serial_Num";
 
         //Create Table Query
         static final String CREATE_TABLE = "CREATE TABLE " +
@@ -65,8 +67,10 @@ final class DBContract {
                 COLUMN_NAME_1 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_2 + TEXT_TYPE + COMMA +
                 COLUMN_NAME_3 + TEXT_TYPE + COMMA +
-                COLUMN_NAME_4 + BLOB_TYPE + COMMA +
-                COLUMN_NAME_5 + TEXT_TYPE + " )";
+                COLUMN_NAME_4 + TEXT_TYPE + COMMA +
+                COLUMN_NAME_5 + TEXT_TYPE + COMMA +
+                COLUMN_NAME_6 + TEXT_TYPE + COMMA +
+                COLUMN_NAME_7 + " )";
 
         //Delete Table Query
         static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
