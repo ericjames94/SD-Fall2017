@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity
     protected String warehouseName;                             // Warehouse name for showing current warehouse
     protected String searchText;
     protected int warehouseId;                                  // Warehouse Id for database queries
+    protected int itemId;                                       // Item Id for database queries
     protected boolean editable = false;                         // If true, allow updating of table entities
-    protected String serialNum;                                 // Serial number for database queries
+    protected String serialNum = "";                            // Serial number for database queries
     protected ArrayList<String> serialNumbers;                  // ArrayList for creating items from read EPCs
 
     // Declare Menu ids for custom Menu items
@@ -290,6 +291,15 @@ public class MainActivity extends AppCompatActivity
             searchInventoryTable();
         }
     }
+    // Function called when an epc is processed and an item is Edited/Created
+    // Remove the passed in epc from the read in epc arraylist
+    protected void epcProcessed(String epc) {
+        serialNum = "";
+        editable = false;
+        try {
+            serialNumbers.remove(epc);
+        } catch (NullPointerException e) {}
+    }
 
     // Update Navigation Drawer and Inventory to correspond to active warehouse
     protected void updateViews() {
@@ -316,7 +326,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 /*  ==========================================
-    =      FRAGMENT TRANSITION FUNCTIONS     =
+    =     FRAGMENT TRANSACTION FUNCTIONS     =
     ==========================================
  */
 

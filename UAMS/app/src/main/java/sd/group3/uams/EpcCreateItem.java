@@ -14,17 +14,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by ericjames on 11/10/17.
  */
 
 
-
 public class EpcCreateItem extends Fragment {
     private ListView mListView;
-    private ArrayList<String> serialNumbers;
+    private ArrayList<String> serialNumbers = new ArrayList<>();
+    private ArrayList<Integer> ids = new ArrayList<>();
     private String serialNum;
     // Start new item entries using EPC
     // Display started entries in a listview
@@ -46,19 +48,20 @@ public class EpcCreateItem extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
         mListView = view.findViewById(R.id.inventory_list);
+        serialNum = ((MainActivity)getActivity()).serialNum;
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
             // Query the database for the serialNumber
-                boolean exists = checkInventory();
+                boolean exists = checkInventory(position);
                 if (exists) {
                     //Edit item entry
+                    editExistingItem();
 
                 }
                 else {
                     //Create new item
-                    ((MainActivity)getActivity()).serialNum = serialNumbers.get(position);
                     createNewItem();
                 }
             }
@@ -78,8 +81,10 @@ public class EpcCreateItem extends Fragment {
     }
 
     // Check if the serial number exists in the database
-    private boolean checkInventory() {
+    private boolean checkInventory(int position) {
         ArrayList<String> temp = new ArrayList<>();
+        ((MainActivity)getActivity()).serialNum = serialNum = serialNumbers.get(position);
+
         try {
             InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
             db.openToRead();
@@ -87,13 +92,30 @@ public class EpcCreateItem extends Fragment {
             if (c != null) {
                 if (c.moveToFirst()) {
                     do {
-                        if (c.getString(c.getColumnIndex("Serial_Num")) == serialNum)
+                        System.out.println(c.getString(c.getColumnIndex("Serial_Num")));
+                        if (c.getString(c.getColumnIndex("Serial_Num")).equals(serialNum)) {
+                            ids.add(c.getInt(c.getColumnIndex("_id")));
                             temp.add(c.getString(c.getColumnIndex("Serial_Num")));
+                        }
                     } while (c.moveToNext());
                 }
             }
             db.close();
         } catch (SQLiteException e) {}
+
+        if (temp.size() > 0) {
+            Iterator<String> i = temp.iterator();
+            int j = 0;
+            while (i.hasNext()) {
+                String next = i.next();
+                if (next.equals(serialNum)){
+                    ((MainActivity)getActivity()).itemId = ids.get(j);
+                    break;
+                }
+                j++;
+            }
+        }
+
         return (temp.size() > 0);
     }
 
@@ -107,5 +129,12 @@ public class EpcCreateItem extends Fragment {
     }
 
     //Edit an existing entry in the inventory table
-
+    private void editExistingItem() {
+        ((MainActivity)getActivity()).editable = true;
+        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.replace(R.id.content_frame, new ItemInfo());
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 }

@@ -150,10 +150,10 @@ public class CreateItem extends Fragment {
                     description.getText().toString(), location.getText().toString(),
                     ((MainActivity)getActivity()).warehouseId, serialNum);
         }
-
-
         db.close();
 
+        //Mark the epc as processed and return to the previous fragment
+        ((MainActivity)getActivity()).epcProcessed(itemSerialNumber);
         getFragmentManager().popBackStackImmediate();
     }
 

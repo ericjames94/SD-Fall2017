@@ -76,15 +76,14 @@ class InventoryDBAdapter extends DBAdapter{
         db.close(); }
 
     void editItemEntry(String itemName, int quantity, String description, String location,
-                       int warehouseId, String serialNum) {
+                       int itemId) {
+        String itemIdStr = Integer.toString(itemId);
         ContentValues values = new ContentValues();
         values.put("Name", itemName);
         values.put("Quantity", quantity);
         values.put("Description", description);
         values.put("Location", location);
-        values.put("Warehouse_ID", warehouseId);
-        values.put("Serial_Num", serialNum);
-        db.update(DBContract.Items.TABLE_NAME, values, "_id = ?", new String[] {serialNum} );
+        db.update(DBContract.Items.TABLE_NAME, values, "_id = ?", new String[] {itemIdStr});
         db.close();
     }
 

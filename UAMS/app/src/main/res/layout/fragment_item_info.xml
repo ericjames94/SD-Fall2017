@@ -101,4 +101,28 @@
         android:layout_below="@+id/item_image_label"
         android:layout_marginRight="10dp"
         android:layout_alignLeft="@+id/item_image_label"/>
+
+    <!--Submit Button When Editing Item-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_submit_item_changes"
+        android:layout_marginTop="400dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:text="@string/button_submit"
+        android:visibility="invisible"/>
+
+    <!--Cancel Button When Editing Item-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_cancel_item_changes"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="400dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:text="@string/button_cancel"
+        android:visibility="invisible"/>
 </RelativeLayout>

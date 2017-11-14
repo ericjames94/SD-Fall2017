@@ -26,6 +26,7 @@ import android.widget.AdapterView;
 
 public class Inventory extends Fragment {
     private ListView mListView;
+    private ArrayList<Integer> ids = new ArrayList<>();
     private ArrayList<String> itemNames = new ArrayList<String>();
     private ArrayList<String> itemDescriptions = new ArrayList<String>();
     private ArrayList<String> itemImages = new ArrayList<String>();
@@ -51,7 +52,7 @@ public class Inventory extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
                 // Set serialNum to make query for item information
-                ((MainActivity)getActivity()).serialNum = serialNums.get(position);
+                ((MainActivity)getActivity()).itemId = ids.get(position);
 
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -104,6 +105,7 @@ public class Inventory extends Fragment {
             if (c != null) {
                 if (c.moveToFirst()) {
                     do {
+                        ids.add(c.getInt((c.getColumnIndex("_id"))));
                         itemNames.add(c.getString(c.getColumnIndex("Name")));
                         itemDescriptions.add(c.getString(c.getColumnIndex("Description")));
                         itemImages.add(c.getString(c.getColumnIndex("Image")));

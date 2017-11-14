@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -20,6 +21,7 @@ import java.net.URI;
 
 public class ItemInfo extends Fragment {
     private EditText name, quantity, location, description;
+    private Button submit, cancel;
     private ImageView image;
     private int id;
 
@@ -34,18 +36,21 @@ public class ItemInfo extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //you can set the title for your toolbar here for different fragments different titles
+
+        if (((MainActivity)getActivity()).editable) {
+            getActivity().setTitle("Edit Item");
+            editSelectedItem();
+        }
         getActivity().setTitle("Item Details");
         name = getActivity().findViewById(R.id.item_name);
         quantity = getActivity().findViewById(R.id.item_quantity);
         location = getActivity().findViewById(R.id.item_location);
         description = getActivity().findViewById(R.id.item_description);
         image = getActivity().findViewById(R.id.item_image);
-        id = ((MainActivity)getActivity()).serialNum;
+        id = ((MainActivity)getActivity()).itemId;
+        System.out.println("Item ID: " + id);
+
         getInventory();
-
-
-
     }
 
     private void getInventory() {
@@ -72,5 +77,36 @@ public class ItemInfo extends Fragment {
         catch(SQLiteException e) {
             System.out.println("Error querying database");
         }
+    }
+
+    private void editSelectedItem() {
+        //Add a button, get the field values on submission,
+        submit = getActivity().findViewById(R.id.button_submit_item_changes);
+        cancel = getActivity().findViewById(R.id.button_cancel_item_changes);
+
+        submit.setVisibility(View.VISIBLE);
+        cancel.setVisibility(View.VISIBLE);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { submitItemChanges(); }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStackImmediate();
+            }
+        });
+    }
+
+    private void submitItemChanges() {
+        int itemId = ((MainActivity)getActivity()).itemId;
+        try {
+            InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
+            db.openToWrite();
+            db.editItemEntry(name.getText().toString(), Integer.parseInt(quantity.getText().toString()),
+                    description.getText().toString(), location.getText().toString(), itemId);
+        } catch(SQLiteException e) {}
     }
 }
