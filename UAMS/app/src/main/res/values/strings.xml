@@ -28,6 +28,7 @@
     <string name="button_get_device">Pair Device</string>
     <string name="button_submit">Submit</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_delete">Delete</string>
     <string name="button_connect">Establish Connection</string>
 
     <!--Fragment Headers-->

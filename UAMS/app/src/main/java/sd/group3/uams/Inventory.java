@@ -28,6 +28,7 @@ public class Inventory extends Fragment {
     private ListView mListView;
     private ArrayList<Integer> ids = new ArrayList<>();
     private ArrayList<String> itemNames = new ArrayList<String>();
+    private boolean isBackFromB;
     private ArrayList<String> itemDescriptions = new ArrayList<String>();
     private ArrayList<String> itemImages = new ArrayList<String>();
     private ArrayList<String> serialNums = new ArrayList<String>();
@@ -47,20 +48,38 @@ public class Inventory extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
         mListView = view.findViewById(R.id.inventory_list);
+        isBackFromB = false;
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-                // Set serialNum to make query for item information
-                ((MainActivity)getActivity()).itemId = ids.get(position);
+        if (((MainActivity)getActivity()).editable) {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
+                    //Set warehouse ID to make query for warehouse information
+                    ((MainActivity)getActivity()).itemId = ids.get(position);
 
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                ft.replace(R.id.content_frame, new ItemInfo());
-                ft.addToBackStack(null);
-                ft.commit();
-            }
-        });
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.replace(R.id.content_frame, new ItemInfo());
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
+
+        } else {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
+                    // Set serialNum to make query for item information
+                    ((MainActivity) getActivity()).itemId = ids.get(position);
+
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.replace(R.id.content_frame, new ItemInfo());
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
+        }
 
         String searchText = ((MainActivity)getActivity()).searchText;
         if (searchText == null) {
@@ -76,8 +95,10 @@ public class Inventory extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Inventory");
+        if (((MainActivity)getActivity()).editable)
+            getActivity().setTitle("Edit Items");
+        else
+            getActivity().setTitle("Inventory");
     }
 
     private void displayItems() {
@@ -96,11 +117,26 @@ public class Inventory extends Fragment {
         mListView.setAdapter(adapter);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        isBackFromB = true;
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        if (isBackFromB) {
+            isBackFromB = false;
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+        }
+    }
+
     private void getInventoryList() {
         try {
             InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
             db.openToRead();
-            Cursor c = db.getAssociatedItems(((MainActivity)getActivity()).warehouseId);
+            Cursor c = db.getAssociatedItems(((MainActivity)getActivity()).activeWarehouseId);
             System.out.println("Cursor C: " + c);
             if (c != null) {
                 if (c.moveToFirst()) {
@@ -129,6 +165,7 @@ public class Inventory extends Fragment {
             if (c != null) {
                 if (c.moveToFirst()) {
                     do {
+                        ids.add(c.getInt((c.getColumnIndex("_id"))));
                         itemNames.add(c.getString(c.getColumnIndex("Name")));
                         itemDescriptions.add(c.getString(c.getColumnIndex("Description")));
                         itemImages.add(c.getString(c.getColumnIndex("Image")));

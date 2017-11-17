@@ -1,5 +1,6 @@
 package sd.group3.uams;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,15 +144,30 @@ public class CreateItem extends Fragment {
             db.createItemEntryWithImage(name.getText().toString(),
                     Integer.parseInt(quantity.getText().toString()),
                     description.getText().toString(), location.getText().toString(), image,
-                    ((MainActivity)getActivity()).warehouseId, serialNum);
+                    ((MainActivity)getActivity()).activeWarehouseId, serialNum);
         }
         else {
             db.createItemEntryNoImage(name.getText().toString(),
                     Integer.parseInt(quantity.getText().toString()),
                     description.getText().toString(), location.getText().toString(),
-                    ((MainActivity)getActivity()).warehouseId, serialNum);
+                    ((MainActivity)getActivity()).activeWarehouseId, serialNum);
         }
         db.close();
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+        builder1.setMessage("Item Created!");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
 
         //Mark the epc as processed and return to the previous fragment
         ((MainActivity)getActivity()).epcProcessed(itemSerialNumber);

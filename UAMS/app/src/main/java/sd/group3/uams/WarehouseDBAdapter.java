@@ -49,8 +49,16 @@ class WarehouseDBAdapter extends DBAdapter{
         db.insert("Warehouses", null, values);
     }
 
-    boolean deleteWarehouseEntry (long id) {
-        return db.delete(DBContract.Warehouses.TABLE_NAME, "_ID =" + id, null) > 0;
+    boolean deleteWarehouseEntry (int id) {
+        return db.delete(DBContract.Warehouses.TABLE_NAME, "_id =" + id, null) > 0;
+    }
+
+    void editWarehouseEntry (int id, String name, String location) {
+        String warehouseIdStr = Integer.toString(id);
+        ContentValues values = new ContentValues();
+        values.put("Name", name);
+        values.put("Location", location);
+        db.update(DBContract.Warehouses.TABLE_NAME, values, "_id = ?", new String [] {warehouseIdStr});
     }
 
 /* ====================================

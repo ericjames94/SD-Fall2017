@@ -18,6 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.apache.fop.cli.Main;
+
 import java.util.ArrayList;
 /*
  * Created by ericjames on 9/16/17.
@@ -27,6 +29,7 @@ public class Warehouses extends Fragment {
     private ListView mListView;
     private ArrayList<String> warehouseNames = new ArrayList<String>();
     protected ArrayList<Integer> warehouseIds = new ArrayList<Integer>();
+    private boolean isBackFromB;
 
     @Nullable
     @Override
@@ -34,52 +37,56 @@ public class Warehouses extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_warehouses, container, false);
         mListView = view.findViewById(R.id.warehouse_list);
+        isBackFromB = false;
+        // If the view is marked as editable, enable editing of warehouses
+        if (((MainActivity)getActivity()).editable) {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
+                    //Set warehouse ID to make query for warehouse information
+                    ((MainActivity)getActivity()).tempWarehouseId = warehouseIds.get(position);
 
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-//                //Set warehouse ID to make query for warehouse information
-//                ((MainActivity)getActivity()).warehouseId = warehouseIds.get(position);
-//
-//                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//                ft.replace(R.id.content_frame, new WarehouseInfo());
-//                ft.addToBackStack(null);
-//                ft.commit();
-//            }
-//        });
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.replace(R.id.content_frame, new WarehouseInfo());
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+            });
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View arg1, final int position, long arg3) {
-                //Ask the user if they want to set the active warehouse to the selected warehouse
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                builder1.setMessage("Set \"" + warehouseNames.get(position) + "\" as active warehouse?");
-                builder1.setCancelable(true);
+        }
+        // Otherwise, you are setting the active warehouse
+        else {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapter, View arg1, final int position, long arg3) {
+                    //Ask the user if they want to set the active warehouse to the selected warehouse
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                    builder1.setMessage("Set \"" + warehouseNames.get(position) + "\" as active warehouse?");
+                    builder1.setCancelable(true);
 
-                builder1.setPositiveButton(
-                        "Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                ((MainActivity)getActivity()).warehouseName = warehouseNames.get(position);
-                                ((MainActivity)getActivity()).warehouseId = warehouseIds.get(position);
-                                ((MainActivity)getActivity()).updateViews();
-                            }
-                        });
-                builder1.setNegativeButton(
-                        "No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                    builder1.setPositiveButton(
+                            "Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    ((MainActivity) getActivity()).warehouseName = warehouseNames.get(position);
+                                    ((MainActivity) getActivity()).activeWarehouseId = warehouseIds.get(position);
+                                    ((MainActivity) getActivity()).updateViews();
+                                }
+                            });
+                    builder1.setNegativeButton(
+                            "No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
 
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-
-            }
-        });
-
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+            });
+        }
         displayWarehouses();
         return view;
     }
@@ -87,8 +94,27 @@ public class Warehouses extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Warehouses");
+        if (((MainActivity)getActivity()).editable) {
+            getActivity().setTitle("Edit Warehouses");
+        }
+        else {
+            getActivity().setTitle("Warehouses");
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isBackFromB = true;
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        if (isBackFromB) {
+            isBackFromB = false;
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+        }
     }
 
     private void displayWarehouses() {

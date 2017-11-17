@@ -50,4 +50,37 @@
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp" />
 
+    <!--Submit button-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_submit_warehouse_changes"
+        android:text="@string/button_submit"
+        android:layout_marginTop="300dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"/>
+
+    <!--Cancel button-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_cancel_warehouse_changes"
+        android:text="@string/button_cancel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"/>
+
+    <!--Delete button-->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_delete_warehouse"
+        android:text="@string/button_delete"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp" />
+
 </RelativeLayout>

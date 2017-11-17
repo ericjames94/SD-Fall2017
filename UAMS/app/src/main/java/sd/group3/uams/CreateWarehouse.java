@@ -104,7 +104,7 @@ public class CreateWarehouse extends Fragment {
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
-                "Close",
+                "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();

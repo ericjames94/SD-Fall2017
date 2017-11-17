@@ -28,6 +28,7 @@ public class EpcCreateItem extends Fragment {
     private ArrayList<String> serialNumbers = new ArrayList<>();
     private ArrayList<Integer> ids = new ArrayList<>();
     private String serialNum;
+    private boolean isBackFromB;
     // Start new item entries using EPC
     // Display started entries in a listview
     // Allow the user onItemClick to editable ItemInfo or CreateItem
@@ -49,6 +50,7 @@ public class EpcCreateItem extends Fragment {
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
         mListView = view.findViewById(R.id.inventory_list);
         serialNum = ((MainActivity)getActivity()).serialNum;
+        isBackFromB = false;
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -72,9 +74,34 @@ public class EpcCreateItem extends Fragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        isBackFromB = true;
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        if (isBackFromB) {
+            isBackFromB = false;
+            System.out.println("OnResume...");
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+        }
+    }
+
     private void populateListView () {
         serialNumbers.clear();
         serialNumbers = ((MainActivity) getActivity()).serialNumbers;
+
+        Iterator<String> i = serialNumbers.iterator();
+            while (i.hasNext()) {
+                String temp = i.next();
+                if (temp.equals("")) {
+                    i.remove();
+                }
+            }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, serialNumbers);
         mListView.setAdapter(adapter);

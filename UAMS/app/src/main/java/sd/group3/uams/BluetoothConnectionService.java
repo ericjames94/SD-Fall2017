@@ -132,7 +132,7 @@ public class BluetoothConnectionService extends Fragment {
 
     private void startScanning() throws IOException {
             String command1 = "1";
-            String userTime = "";
+            String userTime = ((MainActivity)getActivity()).timer;
             // Get second half of command from some field set by the user?
             String command2 = userTime != "" ? userTime : "010";
         if (mOutputStream != null)
@@ -173,7 +173,7 @@ public class BluetoothConnectionService extends Fragment {
 
     private void receiveData() {
         final Handler handler = new Handler();
-        final byte delimiter = 91; //This is the ASCII code for '[' as the delimeter character
+        final byte delimiter = 10; //This is the ASCII code for '[' as the delimeter character
         final byte terminator = 38; //ASCII code for '&' acting as our terminator character
         try {
             flushStream();
@@ -193,9 +193,10 @@ public class BluetoothConnectionService extends Fragment {
                             mInputStream.read(packetBytes);
                             for (int i = 0; i < bytesAvailable; i++) {
                                 byte b = packetBytes[i];
-                                if (b == terminator)
-                                    createItems(readTags);
-                                if (b == delimiter) {
+                                if (b == delimiter || b == terminator) {
+                                    if (b == terminator)
+                                        createItems(readTags);
+
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
                                     final String data = new String(encodedBytes, "UTF-8");
