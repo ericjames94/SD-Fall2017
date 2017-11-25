@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     protected boolean editable = false;                         // If true, allow updating of table entities
     protected String serialNum = "";                            // Serial number for database queries
     protected ArrayList<String> serialNumbers;                  // ArrayList for creating items from read EPCs
+    protected ArrayList<Integer> tempIds;                       // ArrayList for using in search
 
     // Declare Menu ids for custom Menu items
     private static final int MENU_ADD_ITEM = Menu.FIRST;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity
     protected String timer = "";
 
 //      ==========================================
-//      =        EVENT OVERRIDE FUNCTIONS        =
+//      =         EVENT OVERRIDE METHODS         =
 //      ==========================================
 
     @Override
@@ -105,7 +107,6 @@ public class MainActivity extends AppCompatActivity
         // Display inventory menu on create
         navigationView.setCheckedItem(R.id.nav_warehouse);
         displaySelectedScreen(R.id.nav_warehouse);
-
 
         // Create Warehouses and Items tables
         dbHandler = new DBAdapter(this);
@@ -239,7 +240,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 /*  ==========================================
-    =           CREATED FUNCTIONS            =
+    =             CREATED METHODS            =
     ==========================================
  */
 
@@ -263,7 +264,7 @@ public class MainActivity extends AppCompatActivity
                 reportFocus = true;
                 sendFocus = false;
                 receiveFocus = false;
-                //fragment = new Report();
+                fragment = new Report();
                 break;
             case R.id.nav_warehouse:
                 itemFocus = false;
@@ -306,6 +307,7 @@ public class MainActivity extends AppCompatActivity
     private void handleIntent(Intent intent) {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            tempIds = new ArrayList<>();
             String query = intent.getStringExtra(SearchManager.QUERY);
             searchText = query;
             searchInventoryTable();
@@ -346,7 +348,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 /*  ==========================================
-    =     FRAGMENT TRANSACTION FUNCTIONS     =
+    =      FRAGMENT TRANSACTION METHODS      =
     ==========================================
  */
 
@@ -367,6 +369,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void searchInventoryTable() {
+        tempIds = new ArrayList<>();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);

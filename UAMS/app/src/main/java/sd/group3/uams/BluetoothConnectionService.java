@@ -150,6 +150,7 @@ public class BluetoothConnectionService extends Fragment {
         else
             throw new IOException("Null Output Stream");
 
+        message.setText("Retrieving Data...");
         receiveData();
     }
 
@@ -230,7 +231,7 @@ public class BluetoothConnectionService extends Fragment {
         // Display a loading screen while creating the fragment??
         System.out.println("Generating Items...");
         ((MainActivity)getActivity()).serialNumbers = new ArrayList<>(epcCodes);
-        Thread.currentThread().interrupt();
+
         readTags.clear();
         storedStringIndex = 0;
 

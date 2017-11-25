@@ -3,6 +3,7 @@ package sd.group3.uams;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 
 /**
@@ -50,7 +53,6 @@ public class ItemInfo extends Fragment {
         description = getActivity().findViewById(R.id.item_description);
         image = getActivity().findViewById(R.id.item_image);
         id = ((MainActivity)getActivity()).itemId;
-        System.out.println("Item ID: " + id);
 
         getInventory();
     }
@@ -68,7 +70,8 @@ public class ItemInfo extends Fragment {
                     location.setText(c.getString(c.getColumnIndex("Location")));
                     description.setText(c.getString(c.getColumnIndex("Description")));
                     try {
-                        image.setImageURI(Uri.parse(c.getString(c.getColumnIndex("Image"))));
+                        Uri imageUri = Uri.parse(c.getString(c.getColumnIndex("Image")));
+                        image.setImageURI(imageUri);
                     } catch (NullPointerException e) {
                         System.out.println(e);
                     }
@@ -104,6 +107,7 @@ public class ItemInfo extends Fragment {
 
     private void submitItemChanges() {
         int itemId = ((MainActivity)getActivity()).itemId;
+        String itemSerialNumber = ((MainActivity)getActivity()).serialNum;
         try {
             InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
             db.openToWrite();
@@ -124,6 +128,10 @@ public class ItemInfo extends Fragment {
 
             AlertDialog alert11 = builder1.create();
             alert11.show();
+
+            //Mark the epc as processed and return to the previous fragment
+            if (itemSerialNumber != null)
+                ((MainActivity)getActivity()).epcProcessed(itemSerialNumber);
 
             getFragmentManager().popBackStackImmediate();
 

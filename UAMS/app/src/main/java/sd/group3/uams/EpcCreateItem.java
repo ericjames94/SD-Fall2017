@@ -26,7 +26,7 @@ import java.util.Iterator;
 public class EpcCreateItem extends Fragment {
     private ListView mListView;
     private ArrayList<String> serialNumbers = new ArrayList<>();
-    private ArrayList<Integer> ids = new ArrayList<>();
+    private int id;
     private String serialNum;
     private boolean isBackFromB;
     // Start new item entries using EPC
@@ -60,7 +60,6 @@ public class EpcCreateItem extends Fragment {
                 if (exists) {
                     //Edit item entry
                     editExistingItem();
-
                 }
                 else {
                     //Create new item
@@ -72,6 +71,12 @@ public class EpcCreateItem extends Fragment {
         populateListView();
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Receive Data");
     }
 
     @Override
@@ -91,8 +96,13 @@ public class EpcCreateItem extends Fragment {
     }
 
     private void populateListView () {
+        System.out.println("populateListView called...");
         serialNumbers.clear();
-        serialNumbers = ((MainActivity) getActivity()).serialNumbers;
+        serialNumbers = new ArrayList<>(((MainActivity) getActivity()).serialNumbers);
+
+        if (serialNumbers.isEmpty()) {
+            ((MainActivity) getActivity()).updateViews();
+        }
 
         Iterator<String> i = serialNumbers.iterator();
             while (i.hasNext()) {
@@ -111,7 +121,7 @@ public class EpcCreateItem extends Fragment {
     private boolean checkInventory(int position) {
         ArrayList<String> temp = new ArrayList<>();
         ((MainActivity)getActivity()).serialNum = serialNum = serialNumbers.get(position);
-
+        System.out.println("Serial Number and Position: " + serialNum + ", " + position);
         try {
             InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
             db.openToRead();
@@ -119,9 +129,10 @@ public class EpcCreateItem extends Fragment {
             if (c != null) {
                 if (c.moveToFirst()) {
                     do {
-                        System.out.println(c.getString(c.getColumnIndex("Serial_Num")));
-                        if (c.getString(c.getColumnIndex("Serial_Num")).equals(serialNum)) {
-                            ids.add(c.getInt(c.getColumnIndex("_id")));
+                        if (c.getString(c.getColumnIndex("Serial_Num")).equals(serialNum) &&
+                                c.getInt(c.getColumnIndex("Warehouse_ID")) ==
+                                        ((MainActivity)getActivity()).activeWarehouseId) {
+                            id = c.getInt(c.getColumnIndex("_id"));
                             temp.add(c.getString(c.getColumnIndex("Serial_Num")));
                         }
                     } while (c.moveToNext());
@@ -136,7 +147,7 @@ public class EpcCreateItem extends Fragment {
             while (i.hasNext()) {
                 String next = i.next();
                 if (next.equals(serialNum)){
-                    ((MainActivity)getActivity()).itemId = ids.get(j);
+                    ((MainActivity)getActivity()).itemId = id;
                     break;
                 }
                 j++;

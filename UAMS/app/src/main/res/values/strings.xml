@@ -30,12 +30,14 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_delete">Delete</string>
     <string name="button_connect">Establish Connection</string>
+    <string name="button_generate_report">Generate Report</string>
 
     <!--Fragment Headers-->
     <string name="header_create_warehouse">Create New Warehouse</string>
     <string name="header_bluetooth">Establish Bluetooth Connection</string>
     <string name="header_create_item">Create New Item</string>
     <string name="header_connect">Collect Data from the Device</string>
+    <string name="header_generate_report">Generate Inventory Report</string>
 
     <!--Fragment Display Messages-->
     <string name="message_bluetooth">"Click ''Enable'' to turn on Bluetooth Connection \n

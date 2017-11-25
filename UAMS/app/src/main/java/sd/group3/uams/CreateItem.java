@@ -108,7 +108,24 @@ public class CreateItem extends Fragment {
         submitItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submit(v);
+                try {
+                    submit(v);
+                } catch (NumberFormatException e) {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                    builder1.setMessage("Please enter a number value into the 'Quantity' field.");
+                    builder1.setCancelable(true);
+
+                    builder1.setPositiveButton(
+                            "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
             }
         });
 
@@ -127,7 +144,7 @@ public class CreateItem extends Fragment {
         });
     }
 
-    public void submit(View v) {
+    public void submit(View v) throws NumberFormatException {
         InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
         db.openToWrite();
 

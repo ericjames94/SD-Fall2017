@@ -21,11 +21,6 @@ import java.util.ArrayList;
 
 public class SearchActivity extends Fragment {
     private ListView mListView;
-    private ArrayList<Integer> ids = new ArrayList<>();
-    private ArrayList<String> itemNames = new ArrayList<String>();
-    private ArrayList<String> itemDescriptions = new ArrayList<String>();
-    private ArrayList<String> itemImages = new ArrayList<String>();
-    private ArrayList<String> serialNums = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -38,13 +33,13 @@ public class SearchActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
-        mListView = view.findViewById(R.id.inventory_list);
+        mListView = view.findViewById(R.id.search_inventory_list);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
                 // Set serialNum to make query for item information
-                ((MainActivity)getActivity()).itemId = ids.get(position);
+                ((MainActivity)getActivity()).itemId = ((MainActivity)getActivity()).tempIds.get(position);
 
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

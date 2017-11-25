@@ -29,6 +29,7 @@ public class Inventory extends Fragment {
     private ArrayList<Integer> ids = new ArrayList<>();
     private ArrayList<String> itemNames = new ArrayList<String>();
     private boolean isBackFromB;
+    private boolean didSearch = false;
     private ArrayList<String> itemDescriptions = new ArrayList<String>();
     private ArrayList<String> itemImages = new ArrayList<String>();
     private ArrayList<String> serialNums = new ArrayList<String>();
@@ -69,9 +70,16 @@ public class Inventory extends Fragment {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
-                    // Set serialNum to make query for item information
-                    ((MainActivity) getActivity()).itemId = ids.get(position);
 
+                    System.out.println("Row ID: " + arg3);
+                    if (didSearch) {
+                        ((MainActivity)getActivity()).itemId = ((MainActivity)getActivity()).tempIds.get((int) arg3);
+                    }
+                    else {
+                        // Set serialNum to make query for item information
+                        ((MainActivity) getActivity()).itemId = ids.get((int) arg3 );
+                        System.out.println("Item Id: " + ((MainActivity) getActivity()).itemId);
+                    }
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     ft.replace(R.id.content_frame, new ItemInfo());
@@ -127,6 +135,7 @@ public class Inventory extends Fragment {
         super.onResume();
         if (isBackFromB) {
             isBackFromB = false;
+            didSearch = false;
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this).attach(this).commit();
         }
@@ -157,15 +166,16 @@ public class Inventory extends Fragment {
 
     // Query the database for items that match the user entered search string
     private void getInventoryList(String searchText) {
-        System.out.println("Searching for matching strings...");
+        didSearch = true;
         try {
+            ((MainActivity)getActivity()).tempIds = new ArrayList<>();
             InventoryDBAdapter db = new InventoryDBAdapter(this.getContext());
             db.openToRead();
             Cursor c = db.findMatchingString(searchText);
             if (c != null) {
                 if (c.moveToFirst()) {
                     do {
-                        ids.add(c.getInt((c.getColumnIndex("_id"))));
+                        ((MainActivity)getActivity()).tempIds.add(c.getInt((c.getColumnIndex("_id"))));
                         itemNames.add(c.getString(c.getColumnIndex("Name")));
                         itemDescriptions.add(c.getString(c.getColumnIndex("Description")));
                         itemImages.add(c.getString(c.getColumnIndex("Image")));

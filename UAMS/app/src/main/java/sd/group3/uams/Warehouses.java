@@ -18,8 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.apache.fop.cli.Main;
-
 import java.util.ArrayList;
 /*
  * Created by ericjames on 9/16/17.

@@ -3,6 +3,7 @@ package sd.group3.uams;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.MergeCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -35,6 +36,8 @@ class InventoryDBAdapter extends DBAdapter{
     }
 
     public void close() { this.dbHelper.close(); }
+
+    //****** GET QUERIES ******//
 
     Cursor getItem(int id) {
         return db.query(DBContract.Items.TABLE_NAME, null, "_id = " + id, null, null, null, null);
@@ -88,17 +91,31 @@ class InventoryDBAdapter extends DBAdapter{
     }
 
     Cursor findMatchingString (String searchText) {
-        Cursor names = db.query(DBContract.Items.TABLE_NAME, null, "Name LIKE \"%" + searchText + "%\"", null,
-                null, null, null);
-        Cursor descriptions = db.query(DBContract.Items.TABLE_NAME, null, "Description LIKE \"%"
-                        + searchText + "%\"", null, null, null, null);
-        Cursor serialNums = db.query(DBContract.Items.TABLE_NAME, null, "Serial_Num LIKE \"%"
-                + searchText + "%\"", null, null, null, null);
-        return  (names.moveToFirst() ? names :
-                (descriptions.moveToFirst() ? descriptions :
-                (serialNums.moveToFirst()) ? serialNums : null ));
+        Cursor names = searchNames(searchText);
+        Cursor descriptions = searchDescriptions(searchText);
+        Cursor serialNums = searchSerialNumbers(searchText);
+        Cursor results = new MergeCursor(new Cursor[]{names, descriptions, serialNums});
+
+        return  results;
     }
 
+    Cursor searchNames (String searchText) {
+        Cursor names = db.query(DBContract.Items.TABLE_NAME, null, "Name LIKE \"%" + searchText + "%\"", null,
+                null, null, null);
+        return names;
+    }
+
+    Cursor searchDescriptions (String searchText) {
+        Cursor descriptions = db.query(DBContract.Items.TABLE_NAME, null, "Description LIKE \"%"
+                + searchText + "%\"", null, null, null, null);
+        return descriptions;
+    }
+
+    Cursor searchSerialNumbers (String searchText) {
+        Cursor serialNums = db.query(DBContract.Items.TABLE_NAME, null, "Serial_Num LIKE \"%"
+                + searchText + "%\"", null, null, null, null);
+        return serialNums;
+    }
     Cursor findSerialNumber (String serialNum) {
         Cursor serialNums = db.query(DBContract.Items.TABLE_NAME, null, "Serial_Num LIKE \"%"
             + serialNum + "%\"", null, null, null, null);
